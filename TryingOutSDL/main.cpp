@@ -12,6 +12,8 @@ int main() {
         return 1;
     }
 
+    std::string hello;
+
     if (TTF_Init() < 0) {
         SDL_Log("TTF init failed: %s", SDL_GetError());
         SDL_Quit();
@@ -25,7 +27,7 @@ int main() {
         return 1;
     }
 
-    TTF_Font* font = TTF_OpenFont("LucidaSansRegular.ttf", 24);
+    TTF_Font* font = TTF_OpenFont("/ssd2/Programming/CLion/Oktatas/BestSzovegszerkeszto/TryingOutSDL/TryingOutSDL/LucidaSansRegular.ttf", 24);
     if (!font) {
         SDL_Log("Failed to load font: %s", SDL_GetError());
         SDL_DestroyWindow(window);
