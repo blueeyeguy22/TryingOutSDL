@@ -44,7 +44,7 @@ int main() {
     }
 
 
-    std::string text = ""; //std::string&, mert ezzel konnyebb dolgozni, de parameterkent text.c_str()-kent adjuk at, mivel az SDL const char*-okkal dolgozik
+    std::string text = "Hello"; //std::string, mert ezzel konnyebb dolgozni, de parameterkent text.c_str()-kent adjuk at, mivel az SDL const char*-okkal dolgozik
     size_t length = text.length(); //Azert size_t, mert a legtobb fuggveny ilyen tipusu parameterekkel dolgozik
     int textW = 0;
     size_t measured_length = 0;
@@ -80,7 +80,7 @@ int main() {
             text.pop_back();
             SDL_Delay(100);
         }
-        if (keyState[SDL_SCANCODE_BACKSPACE]) {
+        if (keyState[SDL_SCANCODE_SPACE]) {
             text += ' ';
             SDL_Delay(100);
         }
