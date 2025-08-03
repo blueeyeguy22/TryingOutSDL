@@ -47,7 +47,7 @@ void Window::create_window(int width, int height)
         close_window();
         return;
     }
-    text = "Hello test";
+    text = "Hello test\nHello again";
     texting();
 }
 void Window::texting()
@@ -70,7 +70,7 @@ void Window::texting()
         //    SDL_DestroyTexture(texture);
         //}
     }
-    SDL_Delay(100);
+    //SDL_Delay(100);
     update_window();
 }
 
