@@ -81,6 +81,7 @@ void Window::update_window()
     dst.x=50;
     dst.y=50;
     //dst.w = 200;
+
     //dst.h = 50;
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //Fekete, de akar egy SDL_Color tipusu valtozot is kaphat masodik argumentumkent
     SDL_RenderClear(renderer);

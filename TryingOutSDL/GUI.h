@@ -16,6 +16,7 @@ void GUI_run()
     const bool* keyState;
     bool anyKeyPressed;
     bool keyPressed = false;
+
     bool running = true;
     Window window;
     SDL_Event event;
