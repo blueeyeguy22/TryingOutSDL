@@ -9,6 +9,7 @@
 #include "Window.h"
 #include <chrono>
 
+
 void GUI_run()
 {
     int repeatDelay = 500; // Initial delay in ms
@@ -16,11 +17,11 @@ void GUI_run()
     const bool* keyState;
     bool anyKeyPressed;
     bool keyPressed = false;
-
     bool running = true;
     Window window;
     SDL_Event event;
     bool capitalize = false;
+    int line = 1;
     while (running)
     {
         const bool* keyState = SDL_GetKeyboardState(nullptr);
@@ -39,8 +40,8 @@ void GUI_run()
                 window.close_window();
                 break;
             case SDL_EVENT_TEXT_INPUT:
-                window.text += event.text.text;
-                window.texting();
+                window.texts.at(line) += event.text.text;
+                window.texting(line);
                 break;
             case SDL_EVENT_KEY_DOWN:
 
@@ -48,16 +49,29 @@ void GUI_run()
                 {
                     capitalize=true;
                 }
-                //event.key.scancode == SDL_SCANCODE_LSHIFT ? capitalize=true : capitalize=false;
+				if (keyState[SDL_SCANCODE_RETURN])
+                {
+                    window.texts.at(line) += '\n';
+					window.texting(line);
+					lastKeyTime = currentTime;
+                    window.texts.push_back(""); //Hozzaadunk egy uj sort, amit majd modositunk kesobb, hozzaadunk-torlunk belole
+					window.add_texture(nullptr); //Hozzaadunk egy ures texturat, amit majd feltoltunk a texting() fuggvenyben
+					line++; 
+                    if (window.get_dsts().size() <= line)
+                        window.get_dsts().resize(line + 1, {0, 0, 0, 0});
+
+                    window.get_dsts().at(line).y = 20.0f * (line - 1); // Set Y position explicitly
+
+                    break;
+				}
                 for (uint16_t keychar=4; keychar<30; keychar++)
                 {
                     if (!capitalize && event.key.scancode==keychar)
                     {
                         if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
                         {
-                            window.text+='a'+keychar-4;
-                            window.texting();
-                            //SDL_Delay(70);
+                            window.texts.at(line) += 'a' + keychar - 4;
+                            window.texting(line);
                             lastKeyTime = currentTime;
                         }
                         break;
@@ -66,9 +80,8 @@ void GUI_run()
                     {
                         if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
                         {
-                            window.text+='A'+keychar-4;
-                            window.texting();
-                            //SDL_Delay(70);
+                            window.texts.at(line) += 'A' + keychar - 4;
+                            window.texting(line);
                             lastKeyTime = currentTime;
                             capitalize=false;
                         }
@@ -81,9 +94,8 @@ void GUI_run()
                     {
                         if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
                         {
-                            window.text+='1'+keychar-30;
-                            window.texting();
-                            //SDL_Delay(70);
+                            window.texts.at(line) += '1' + keychar - 30;
+                            window.texting(line);
                             lastKeyTime = currentTime;
                             break;
                         }
@@ -93,20 +105,18 @@ void GUI_run()
                 {
                     if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
                     {
-                        window.text+='0';
-                        window.texting();
-                        //SDL_Delay(70);
+                        window.texts.at(line) += '0';
+                        window.texting(line);
                         lastKeyTime = currentTime;
                         break;
                     }
                 }
-                if (event.key.scancode==SDL_SCANCODE_BACKSPACE && !window.text.empty())
+                if (event.key.scancode==SDL_SCANCODE_BACKSPACE && !window.texts.at(line).empty())
                 {
                     if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
                     {
-                        window.text.pop_back();
-                        window.texting();
-                        //SDL_Delay(70);
+                        window.texts.at(line).pop_back();
+                        window.texting(line);
                         lastKeyTime = currentTime;
                         break;
                     }
@@ -115,57 +125,49 @@ void GUI_run()
                 {
                     if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
                     {
-                        window.text += ' ';
-                        window.texting();
-                        //SDL_Delay(70);
+                        window.texts.at(line) += ' ';
+                        window.texting(line);
                         lastKeyTime = currentTime;
                         break;
                     }
                 }
-            default:
                 break;
+            default:
+				break;
             }
             keyPressed = anyKeyPressed;
-        }
+            /*
+            if (!window.get_renderer()) return;
+            if (line >= window.texts.size()|| !window.get_texture(line)) return;*/
+            //SDL_GetTextureSize(window.get_texture(), &window.get_dst().w, &window.get_dst().h);
+
+            //dst.w = 200;
+
+            //dst.h = 50;
 
 
-        /*keyState = SDL_GetKeyboardState(NULL); //Megnezi, hogy le van-e nyomva egy adott gomb (igaz-hamis tombot ad vissza)
-        if (keyState[SDL_SCANCODE_BACKSPACE] && !window.text.empty()) {
-            window.text.pop_back();
-            window.texting();
-            SDL_Delay(100);
-        }
-        if (keyState[SDL_SCANCODE_SPACE]) {
-            window.text += ' ';
-            window.texting();
-            SDL_Delay(100);
-        }
-        for (int i = SDL_SCANCODE_A; i <= SDL_SCANCODE_Z; i++) {
-            if (keyState[i]) {
-                char c = 'a' + (i - SDL_SCANCODE_A);
-                window.text += c;
-                window.texting();
-                SDL_Delay(100);
-                break;
+            SDL_SetRenderDrawColor(window.get_renderer(), 0, 0, 0, 255); //Fekete, de akar egy SDL_Color tipusu valtozot is kaphat masodik argumentumkent
+            SDL_RenderClear(window.get_renderer());
+            //SDL_RenderTexture(window.get_renderer(), window.get_texture(line), NULL, &window.get_dst());
+            for (int i = 1; i <= line; ++i)
+            {
+                SDL_Texture* tex = window.get_texture(i);
+                if (!tex) continue;
+
+                SDL_FRect dst = window.get_dsts().at(i);
+                dst.x = 0.0f;
+                dst.y = 20.0f * (i - 1);
+
+                SDL_RenderTexture(window.get_renderer(), tex, nullptr, &dst);
             }
+
+
+
+            
+            SDL_RenderPresent(window.get_renderer());
+            SDL_Delay(16); //Ez kb 60 fps. A framek kozott 16 ms-t var
+
         }
-        for (int i = SDL_SCANCODE_1; i <= SDL_SCANCODE_0; i++) {
-            if (keyState[0]) {
-                window.text += '0';
-                window.texting();
-                SDL_Delay(100);
-                break;
-            }
-            else {
-                if (keyState[i]) {
-                    char c = '1' + (i - SDL_SCANCODE_1);
-                    window.text += c;
-                    window.texting();
-                    SDL_Delay(100);
-                    break;
-                }
-            }
-        }*/
     }
 }
 
