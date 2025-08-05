@@ -7,11 +7,13 @@
 
 
 #include "Window.h"
+#include "CharacterTable.h"
 #include <chrono>
 
 
 void GUI_run()
 {
+    KeyboardLang keyboard(KeyboardLang::HUN);
     int repeatDelay = 500; // Initial delay in ms
     int repeatRate = 50;   // Repeat rate in ms
     const bool* keyState;
@@ -51,7 +53,7 @@ void GUI_run()
                 }
 				if (keyState[SDL_SCANCODE_RETURN])
                 {
-                    window.texts.at(line) += '\n';
+                    window.texts.at(line) += '\n'; //Valamiért nálam kiprinteli ismeretlen karakterként
 					window.texting(line);
 					lastKeyTime = currentTime;
                     window.texts.push_back(""); //Hozzaadunk egy uj sort, amit majd modositunk kesobb, hozzaadunk-torlunk belole
@@ -64,19 +66,44 @@ void GUI_run()
 
                     break;
 				}
+                if (keyboard.getChar(event.key.scancode)!=0)
+                {
+                    if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay)) //De ez miért működik/segít? továbbra is fura
+                    {
+                        wchar_t character = keyboard.getChar(event.key.scancode);
+                        if (capitalize)
+                        {
+                            character=std::towupper(character);
+                            capitalize=false;
+                        }
+                        window.texts.at(line) += character;
+                        window.texting(line);
+                        lastKeyTime = currentTime;
+                    }
+                }
+
+                //TODO: HA NÁLAD IS MŰKÖDIK AKKOR TÖRÖLHETŐ A KOMMENTELT RÉSZ
+
+                /*
                 for (uint16_t keychar=4; keychar<30; keychar++)
                 {
-                    if (!capitalize && event.key.scancode==keychar)
+                    if (event.key.scancode==keychar)
                     {
                         if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
                         {
-                            window.texts.at(line) += 'a' + keychar - 4;
+                            wchar_t character = 'a' + keychar - 4;
+                            if (capitalize)
+                            {
+                                character=std::towupper(character);
+                                capitalize=false;
+                            }
+                            window.texts.at(line) += character;
                             window.texting(line);
                             lastKeyTime = currentTime;
                         }
                         break;
-                    }
-                    else if (capitalize && event.key.scancode==keychar)
+                    }*/
+                    /*else if (capitalize && event.key.scancode==keychar)
                     {
                         if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
                         {
@@ -86,8 +113,9 @@ void GUI_run()
                             capitalize=false;
                         }
                         break;
-                    }
-                }
+                    }*/
+                //}
+                /*
                 for (uint16_t keychar=30; keychar<39; keychar++)
                 {
                     if (event.key.scancode==keychar)
@@ -111,6 +139,7 @@ void GUI_run()
                         break;
                     }
                 }
+                */
                 if (event.key.scancode==SDL_SCANCODE_BACKSPACE && !window.texts.at(line).empty())
                 {
                     if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
@@ -129,6 +158,15 @@ void GUI_run()
                         window.texting(line);
                         lastKeyTime = currentTime;
                         break;
+                    }
+                }
+                break;
+            case SDL_EVENT_KEY_UP:
+                for (uint16_t i=4; i<=512;++i)
+                {
+                    if (event.key.scancode==i)
+                    {
+                        std::cout<<"Last button number was: "<<i <<"\n";
                     }
                 }
                 break;

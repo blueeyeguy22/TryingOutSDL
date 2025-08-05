@@ -11,6 +11,7 @@ add_executable(TryingOutSDL
         Window.cpp
         Window.h
         GUI.h
+        CharacterTable.h
 )
 
 add_custom_command(TARGET TryingOutSDL POST_BUILD
