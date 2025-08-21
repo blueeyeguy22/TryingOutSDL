@@ -9,7 +9,8 @@
 #include "Window.h"
 #include "CharacterTable.h"
 #include <chrono>
-
+#include <string>
+#include <cstring>
 
 void GUI_run()
 {
@@ -70,14 +71,14 @@ void GUI_run()
                 {
                     if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay)) //De ez miért működik/segít? továbbra is fura
                     {
-                        for (char c : keyboard.getChar(event.key.scancode)) {
-                            std::cout<< c << ": "<<(int)c;
-                        }
+
                         //std::cout<<(int)(keyboard.getChar(event.key.scancode)[0]);
-                        char character = keyboard.getChar(event.key.scancode)[0];
+                        std::string character = keyboard.getChar(event.key.scancode);
+
                         if (capitalize)
                         {
-                            character=std::toupper(character);
+                            std::transform(character.begin(), character.end(), character.begin(),::toupper);
+                            //character=character.;
                             capitalize=false;
                         }
                         window.texts.at(line) += character;

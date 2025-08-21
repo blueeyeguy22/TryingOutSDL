@@ -83,7 +83,7 @@ void Window::texting(int pos)
     length = texts.at(pos).length(); //Iras utan megvaltozik a text hossza, updateljuk
     TTF_MeasureString(font, texts.at(pos).c_str(), length, 0, &textW, &measured_length); //Elokeszitjuk renderelesre
     */
-    std::cout<<texts.at(pos)<<std::endl;
+    //std::cout<<texts.at(pos)<<std::endl;
     SDL_Surface* surface = TTF_RenderText_Solid(font, texts.at(pos).c_str(), length, textColor);
     if (surface) {
 		textures.at(pos) = SDL_CreateTextureFromSurface(renderer, surface);

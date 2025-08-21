@@ -76,11 +76,11 @@ public:
         }
         for (int16_t keychar=SDL_SCANCODE_A; keychar<=SDL_SCANCODE_X; keychar++)
         {
-            currentMapping[(SDL_Scancode)keychar] = std::to_string('a' +keychar-SDL_SCANCODE_A);
+            currentMapping[(SDL_Scancode)keychar] = ('a' +keychar-SDL_SCANCODE_A);
         }
         for (int16_t numchar=SDL_SCANCODE_1; numchar<=SDL_SCANCODE_9; numchar++)
         {
-            currentMapping[(SDL_Scancode)numchar] = std::to_string('1' +numchar-SDL_SCANCODE_1);
+            currentMapping[(SDL_Scancode)numchar] = ('1' +numchar-SDL_SCANCODE_1);
         }
     }
 
@@ -88,7 +88,7 @@ public:
     std::string getChar(SDL_Scancode scancode) const
     {
         auto it = currentMapping.find(scancode);
-        std::cout<<"Scancode:" << scancode <<" code:"<<it->second;
+        std::cout<<"Scancode:" << scancode <<" code:"<<it->second <<std::endl;
         return it != currentMapping.end() ? it->second : 0;
     }
 
