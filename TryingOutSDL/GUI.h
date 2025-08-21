@@ -73,7 +73,7 @@ void GUI_run()
                         wchar_t character = keyboard.getChar(event.key.scancode);
                         if (capitalize)
                         {
-                            character=std::towupper(character);
+                            character=std::toupper(character);
                             capitalize=false;
                         }
                         window.texts.at(line) += character;

@@ -16,8 +16,8 @@ add_executable(TryingOutSDL
 
 add_custom_command(TARGET TryingOutSDL POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_SOURCE_DIR}/LucidaSansRegular.ttf
-        $<TARGET_FILE_DIR:TryingOutSDL>/LucidaSansRegular.ttf
+        ${CMAKE_SOURCE_DIR}/DejaVuSerif.ttf
+        $<TARGET_FILE_DIR:TryingOutSDL>/DejaVuSerif.ttf
 )
 
 target_link_libraries(TryingOutSDL PRIVATE SDL3::SDL3 SDL3_ttf::SDL3_ttf)
