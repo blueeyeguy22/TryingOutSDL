@@ -17,6 +17,7 @@ private:
     std::map<SDL_Scancode, std::string> hungarian_keymap
     {
         {SDL_SCANCODE_0, "ö"},
+
 {SDL_SCANCODE_GRAVE, "0"},
 {SDL_SCANCODE_Z, "y"},
 {SDL_SCANCODE_Y, "z"},
