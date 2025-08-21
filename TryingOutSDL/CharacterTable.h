@@ -84,6 +84,7 @@ public:
         }
     }
 
+
     //Monsieur ChatGPT dobta, nekem pár rész magas még: miért működik csak autoval. Mit ad a const kulcsszó
     std::string getChar(SDL_Scancode scancode) const
     {

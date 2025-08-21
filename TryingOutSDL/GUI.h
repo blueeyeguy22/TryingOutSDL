@@ -77,6 +77,7 @@ void GUI_run()
 
                         if (capitalize)
                         {
+
                             std::transform(character.begin(), character.end(), character.begin(),::toupper);
                             //character=character.;
                             capitalize=false;

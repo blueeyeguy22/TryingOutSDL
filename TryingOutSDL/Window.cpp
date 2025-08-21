@@ -37,6 +37,7 @@ std::vector<SDL_FRect>& Window::get_dsts()
 	return dsts;
 }
 
+
 TTF_Font* Window::get_font()
 {
 	return font;
