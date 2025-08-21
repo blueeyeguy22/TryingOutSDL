@@ -88,6 +88,7 @@ public:
     std::string getChar(SDL_Scancode scancode) const
     {
         auto it = currentMapping.find(scancode);
+        std::cout<<"Scancode:" << scancode <<" code:"<<it->second;
         return it != currentMapping.end() ? it->second : 0;
     }
 

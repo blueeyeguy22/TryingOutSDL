@@ -66,11 +66,15 @@ void GUI_run()
 
                     break;
 				}
-                if (keyboard.getChar(event.key.scancode)!=0)
+                if (keyboard.getChar(event.key.scancode)[0]!=0)
                 {
                     if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay)) //De ez miért működik/segít? továbbra is fura
                     {
-                        wchar_t character = keyboard.getChar(event.key.scancode);
+                        for (char c : keyboard.getChar(event.key.scancode)) {
+                            std::cout<< c << ": "<<(int)c;
+                        }
+                        //std::cout<<(int)(keyboard.getChar(event.key.scancode)[0]);
+                        char character = keyboard.getChar(event.key.scancode)[0];
                         if (capitalize)
                         {
                             character=std::toupper(character);
