@@ -7,8 +7,8 @@
 
 #include "SDLHandling.h"
 
-void GUI_run()
-{
+void GUI_run() {
+
 	SDLHandler state;
 	while (state.getRunning())
 	{

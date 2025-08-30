@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SDLHandler.cpp" />
+    <ClCompile Include="SDLHandling.cpp" />
     <ClCompile Include="SDLHandling.h" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
