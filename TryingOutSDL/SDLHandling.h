@@ -1,7 +1,7 @@
 #pragma once
-#include "SDLHandler.cpp"
+#include "SDLHandler.h"
 
-void SDLHandling(SDLHandler& handler) {
+void SDLHandling(SDLHandler& state) {
 
     const bool* keyState = SDL_GetKeyboardState(nullptr);
     SDL_Event event;
@@ -48,7 +48,7 @@ void SDLHandling(SDLHandler& handler) {
             if (state.getKeyboard().getChar(event.key.scancode)[0] != 0) {
                 if (!state.isKeyPressed() || timeSinceLastKey > (state.isKeyPressed() ? state.getRepeatRate() : state.getRepeatDelay())) {
                     std::string character = state.getKeyboard().getChar(event.key.scancode);
-                    if (state.isCapitalize()) {
+                    if (state.isCapitalized()) {
                         std::transform(character.begin(), character.end(), character.begin(), ::toupper);
                         state.setCapitalize(false);
                     }

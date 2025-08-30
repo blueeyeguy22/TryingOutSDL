@@ -21,8 +21,8 @@ private:
     KeyboardLang keyboard{ KeyboardLang::HUN };
 public:
     bool getRunning();
-	bool getKeyPressed();
-	bool capitalizeStatus();
+	bool isKeyPressed();
+	bool isCapitalized();
 	int getLine();
 	int getRepeatDelay();
 	int getRepeatRate();

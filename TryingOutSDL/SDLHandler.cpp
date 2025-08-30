@@ -5,11 +5,11 @@ bool SDLHandler::getRunning()
 {
 	return running;
 }
-bool SDLHandler::getKeyPressed()
+bool SDLHandler::isKeyPressed()
 {
 	return keyPressed;
 }
-bool SDLHandler::capitalizeStatus()
+bool SDLHandler::isCapitalized()
 {
 	return capitalize;
 }
