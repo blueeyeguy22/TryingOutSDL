@@ -78,13 +78,7 @@ void Window::create_window(int width, int height)
 void Window::texting(int pos)
 {
     size_t length = texts.at(pos).length();
-    /*int textH = TTF_GetFontHeight(font);
-    int textW;
-    size_t measured_length;
-    length = texts.at(pos).length(); //Iras utan megvaltozik a text hossza, updateljuk
-    TTF_MeasureString(font, texts.at(pos).c_str(), length, 0, &textW, &measured_length); //Elokeszitjuk renderelesre
-    */
-    //std::cout<<texts.at(pos)<<std::endl;
+
     SDL_Surface* surface = TTF_RenderText_Solid(font, texts.at(pos).c_str(), length, textColor);
     if (surface) {
 		textures.at(pos) = SDL_CreateTextureFromSurface(renderer, surface);
@@ -154,10 +148,6 @@ void Window::set_dst(float x, float y, float w, float h)
 
 void Window::close_window()
 {
-    //if (font)
-    //{
-    //    TTF_CloseFont(font);
-    //}
     if (renderer)
     {
         SDL_DestroyRenderer(renderer);
@@ -174,20 +164,3 @@ void Window::add_texture(SDL_Texture* newTexture)
 	textures.push_back(newTexture);
 }
 
-/*void Window::update_window()
-{
-    if (!renderer || !texture) return;
-    SDL_GetTextureSize(texture, &dst.w, &dst.h);
-    dst.x=50;
-    dst.y=50;
-    //dst.w = 200;
-
-    //dst.h = 50;
-
-
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); //Fekete, de akar egy SDL_Color tipusu valtozot is kaphat masodik argumentumkent
-    SDL_RenderClear(renderer);
-    SDL_RenderTexture(renderer, texture, NULL, &dst);
-    SDL_RenderPresent(renderer);
-    SDL_Delay(16); //Ez kb 60 fps. A framek kozott 16 ms-t var
-}*/

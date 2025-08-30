@@ -11,12 +11,13 @@
 #include <chrono>
 #include <string>
 #include <cstring>
+#include <algorithm>
 
 void GUI_run()
 {
     KeyboardLang keyboard(KeyboardLang::HUN);
-    int repeatDelay = 500; // Initial delay in ms
-    int repeatRate = 50;   // Repeat rate in ms
+    int repeatDelay = 500;
+    int repeatRate = 50; 
     const bool* keyState;
     bool anyKeyPressed;
     bool keyPressed = false;
@@ -44,7 +45,7 @@ void GUI_run()
                 break;
             case SDL_EVENT_TEXT_INPUT:
                 window.texts.at(line) += event.text.text;
-                window.texting(line);
+				window.texting(line);
                 break;
             case SDL_EVENT_KEY_DOWN:
 
@@ -54,7 +55,7 @@ void GUI_run()
                 }
 				if (keyState[SDL_SCANCODE_RETURN])
                 {
-                    window.texts.at(line) += '\n'; //Valamiért nálam kiprinteli ismeretlen karakterként
+
 					window.texting(line);
 					lastKeyTime = currentTime;
                     window.texts.push_back(""); //Hozzaadunk egy uj sort, amit majd modositunk kesobb, hozzaadunk-torlunk belole
@@ -72,14 +73,12 @@ void GUI_run()
                     if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay)) //De ez miért működik/segít? továbbra is fura
                     {
 
-                        //std::cout<<(int)(keyboard.getChar(event.key.scancode)[0]);
                         std::string character = keyboard.getChar(event.key.scancode);
 
                         if (capitalize)
                         {
 
                             std::transform(character.begin(), character.end(), character.begin(),::toupper);
-                            //character=character.;
                             capitalize=false;
                         }
                         window.texts.at(line) += character;
@@ -88,64 +87,7 @@ void GUI_run()
                     }
                 }
 
-                //TODO: HA NÁLAD IS MŰKÖDIK AKKOR TÖRÖLHETŐ A KOMMENTELT RÉSZ
 
-                /*
-                for (uint16_t keychar=4; keychar<30; keychar++)
-                {
-                    if (event.key.scancode==keychar)
-                    {
-                        if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
-                        {
-                            wchar_t character = 'a' + keychar - 4;
-                            if (capitalize)
-                            {
-                                character=std::towupper(character);
-                                capitalize=false;
-                            }
-                            window.texts.at(line) += character;
-                            window.texting(line);
-                            lastKeyTime = currentTime;
-                        }
-                        break;
-                    }*/
-                    /*else if (capitalize && event.key.scancode==keychar)
-                    {
-                        if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
-                        {
-                            window.texts.at(line) += 'A' + keychar - 4;
-                            window.texting(line);
-                            lastKeyTime = currentTime;
-                            capitalize=false;
-                        }
-                        break;
-                    }*/
-                //}
-                /*
-                for (uint16_t keychar=30; keychar<39; keychar++)
-                {
-                    if (event.key.scancode==keychar)
-                    {
-                        if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
-                        {
-                            window.texts.at(line) += '1' + keychar - 30;
-                            window.texting(line);
-                            lastKeyTime = currentTime;
-                            break;
-                        }
-                    }
-                }
-                if (event.key.scancode==SDL_SCANCODE_0)
-                {
-                    if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
-                    {
-                        window.texts.at(line) += '0';
-                        window.texting(line);
-                        lastKeyTime = currentTime;
-                        break;
-                    }
-                }
-                */
                 if (event.key.scancode==SDL_SCANCODE_BACKSPACE && !window.texts.at(line).empty())
                 {
                     if (!keyPressed || timeSinceLastKey > (keyPressed ? repeatRate : repeatDelay))
@@ -180,19 +122,10 @@ void GUI_run()
 				break;
             }
             keyPressed = anyKeyPressed;
-            /*
-            if (!window.get_renderer()) return;
-            if (line >= window.texts.size()|| !window.get_texture(line)) return;*/
-            //SDL_GetTextureSize(window.get_texture(), &window.get_dst().w, &window.get_dst().h);
-
-            //dst.w = 200;
-
-            //dst.h = 50;
 
 
             SDL_SetRenderDrawColor(window.get_renderer(), 0, 0, 0, 255); //Fekete, de akar egy SDL_Color tipusu valtozot is kaphat masodik argumentumkent
             SDL_RenderClear(window.get_renderer());
-            //SDL_RenderTexture(window.get_renderer(), window.get_texture(line), NULL, &window.get_dst());
             for (int i = 1; i <= line; ++i)
             {
                 SDL_Texture* tex = window.get_texture(i);
